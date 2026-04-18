@@ -8,7 +8,7 @@ import org.junit.Test;
 public class DatabaseTest {
 
     @Test
-    public void deberiaConectarALaDB() {
+    public void tryConnectDatabase() {
         Connection conn = DatabaseConnection.connect();
         assertNotNull(conn);
     }
