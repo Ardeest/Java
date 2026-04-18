@@ -7,8 +7,15 @@ import java.util.List;
 
 public class CustomerService {
 
-    private CustomerDAO dao = new CustomerDAO();
+    private CustomerDAO dao;
     
+    public CustomerService() {
+        this.dao = new CustomerDAO();
+    }
+
+    public CustomerService(CustomerDAO dao) {
+        this.dao = dao;
+    }
     // SELECT
     // Obtener todos los clientes
     public List<Customer> getAll() {

@@ -13,9 +13,17 @@ import java.util.Map;
 public class ClientsPanel extends javax.swing.JPanel {
     
     private Map<JTextField, String> placeholders = new HashMap<>();
+    private int selectedId = -1;
 
     public ClientsPanel() {      
         initComponents();
+        
+        tableCustomer.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                loadSelectedRow();
+            }
+        });
+        
         addPlaceholder(searchTextField, "Buscar");
         addPlaceholder(nameTextField, "Nombre");
         addPlaceholder(lastName1TextField, "Primer Apellido");
@@ -25,10 +33,33 @@ public class ClientsPanel extends javax.swing.JPanel {
         addPlaceholder(addressTextField, "Dirección");
         loadTable();
     }
+    
+    private void loadSelectedRow() {
+        int row = tableCustomer.getSelectedRow();
 
+        if (row == -1) return;
+
+        selectedId = Integer.parseInt(tableCustomer.getValueAt(row, 0).toString());
+
+        idTextField.setText(tableCustomer.getValueAt(row, 1).toString());
+        nameTextField.setText(tableCustomer.getValueAt(row, 2).toString());
+        lastName1TextField.setText(tableCustomer.getValueAt(row, 3).toString());
+        lastName2TextField.setText(tableCustomer.getValueAt(row, 4).toString());
+        phoneTextField.setText(tableCustomer.getValueAt(row, 5).toString());
+        addressTextField.setText(tableCustomer.getValueAt(row, 6).toString());
+
+        // quitar color gris (placeholder)
+        nameTextField.setForeground(Color.BLACK);
+        lastName1TextField.setForeground(Color.BLACK);
+        lastName2TextField.setForeground(Color.BLACK);
+        idTextField.setForeground(Color.BLACK);
+        phoneTextField.setForeground(Color.BLACK);
+        addressTextField.setForeground(Color.BLACK);
+    }
     private void loadTable() {
         DefaultTableModel model = new DefaultTableModel();
 
+        model.addColumn("ID");
         model.addColumn("Cédula");
         model.addColumn("Nombre");
         model.addColumn("Primer Apellido");
@@ -52,6 +83,9 @@ public class ClientsPanel extends javax.swing.JPanel {
         }
 
         tableCustomer.setModel(model);
+        tableCustomer.getColumnModel().getColumn(0).setMinWidth(0);
+        tableCustomer.getColumnModel().getColumn(0).setMaxWidth(0);
+        tableCustomer.getColumnModel().getColumn(0).setWidth(0);
     }
      
     private void insertCustomer() {
@@ -128,6 +162,7 @@ public class ClientsPanel extends javax.swing.JPanel {
     private void fillTable(List<Customer> list) {
         DefaultTableModel model = new DefaultTableModel();
 
+        model.addColumn("ID");
         model.addColumn("Cédula");
         model.addColumn("Nombre");
         model.addColumn("Primer Apellido");
@@ -147,6 +182,9 @@ public class ClientsPanel extends javax.swing.JPanel {
             });
         }
         tableCustomer.setModel(model);
+        tableCustomer.getColumnModel().getColumn(0).setMinWidth(0);
+        tableCustomer.getColumnModel().getColumn(0).setMaxWidth(0);
+        tableCustomer.getColumnModel().getColumn(0).setWidth(0);
     }
     
     
@@ -182,6 +220,7 @@ public class ClientsPanel extends javax.swing.JPanel {
         updateButton.addActionListener(this::updateButtonActionPerformed);
 
         deleteButton.setText("Eliminar");
+        deleteButton.addActionListener(this::deleteButtonActionPerformed);
 
         cleanFieldsButtons.setText("Borrar campos");
         cleanFieldsButtons.addActionListener(this::cleanFieldsButtonsActionPerformed);
@@ -278,7 +317,39 @@ public class ClientsPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_searchTextFieldActionPerformed
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
-        // TODO add your handling code here:
+        if (selectedId == -1) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Seleccione un cliente");
+            return;
+        }
+
+        int confirm = javax.swing.JOptionPane.showConfirmDialog(
+                this,
+                "¿Desea actualizar este cliente?",
+                "Confirmar",
+                javax.swing.JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirm != javax.swing.JOptionPane.YES_OPTION) return;
+
+        Customer c = new Customer();
+        c.setId(selectedId);
+        c.setFirstName(getRealText(nameTextField));
+        c.setLastName1(getRealText(lastName1TextField));
+        c.setLastName2(getRealText(lastName2TextField));
+        c.setIdCard(getRealText(idTextField));
+        c.setPhone(getRealText(phoneTextField));
+        c.setAddress(getRealText(addressTextField));
+
+        CustomerService service = new CustomerService();
+        Result result = service.update(c);
+
+        javax.swing.JOptionPane.showMessageDialog(this, result.getMessage());
+
+        if (result.isSuccess()) {
+            loadTable();
+            clearFields();
+            selectedId = -1;
+        }
     }//GEN-LAST:event_updateButtonActionPerformed
 
     private void cleanFieldsButtonsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cleanFieldsButtonsActionPerformed
@@ -289,6 +360,33 @@ public class ClientsPanel extends javax.swing.JPanel {
         insertCustomer();
         
     }//GEN-LAST:event_addButtonActionPerformed
+
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        if (selectedId == -1) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Seleccione un cliente");
+            return;
+        }
+
+        int confirm = javax.swing.JOptionPane.showConfirmDialog(
+                this,
+                "¿Seguro que desea eliminar este cliente?",
+                "Confirmar eliminación",
+                javax.swing.JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirm != javax.swing.JOptionPane.YES_OPTION) return;
+
+        CustomerService service = new CustomerService();
+        Result result = service.delete(selectedId);
+
+        javax.swing.JOptionPane.showMessageDialog(this, result.getMessage());
+
+        if (result.isSuccess()) {
+            loadTable();
+            clearFields();
+            selectedId = -1;
+        }
+    }//GEN-LAST:event_deleteButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
