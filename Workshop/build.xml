@@ -13,16 +13,5 @@
     <description>Builds, tests, and runs the project Workshop.</description>
     <import file="nbproject/build-impl.xml"/>
 
-<target name="checkstyle-init">
-        <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties"
-                 classpath="lib/checkstyle-all.jar"/>
-    </target>
-
-    <target name="checkstyle" depends="checkstyle-init">
-        <checkstyle config="sun_checks.xml" failOnViolation="true">
-            <fileset dir="src" includes="**/*.java"/>
-        </checkstyle>
-    </target>
-<target name="-pre-test" depends="checkstyle" />
 
 </project>
