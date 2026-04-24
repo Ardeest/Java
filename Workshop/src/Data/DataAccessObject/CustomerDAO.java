@@ -2,6 +2,7 @@ package Data.DataAccessObject;
 
 import Data.DatabaseConnection;
 import Data.Models.Customer;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,35 @@ public class CustomerDAO {
             e.printStackTrace();
         }
     }
+    
+    public Customer getById(int id) {
+        String sql = "SELECT * FROM customer WHERE id = ?";
+
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                Customer c = new Customer();
+                c.setId(rs.getInt("id"));
+                c.setIdCard(rs.getString("id_card"));
+                c.setFirstName(rs.getString("first_name"));
+                c.setLastName1(rs.getString("last_name1"));
+                c.setLastName2(rs.getString("last_name2"));
+                c.setPhone(rs.getString("phone"));
+                c.setAddress(rs.getString("address"));
+                return c;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
     public List<Customer> getAll() {
         List<Customer> list = new ArrayList<>();
@@ -37,16 +67,7 @@ public class CustomerDAO {
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                Customer c = new Customer();
-                c.setId(rs.getInt("id"));
-                c.setIdCard(rs.getString("id_card"));
-                c.setFirstName(rs.getString("first_name"));
-                c.setLastName1(rs.getString("last_name1"));
-                c.setLastName2(rs.getString("last_name2"));
-                c.setPhone(rs.getString("phone"));
-                c.setAddress(rs.getString("address"));
-
-                list.add(c);
+                list.add(map(rs));
             }
 
         } catch (Exception e) {
@@ -67,14 +88,7 @@ public class CustomerDAO {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                c = new Customer();
-                c.setId(rs.getInt("id"));
-                c.setIdCard(rs.getString("id_card"));
-                c.setFirstName(rs.getString("first_name"));
-                c.setLastName1(rs.getString("last_name1"));
-                c.setLastName2(rs.getString("last_name2"));
-                c.setPhone(rs.getString("phone"));
-                c.setAddress(rs.getString("address"));
+                c = map(rs);
             }
 
         } catch (Exception e) {
@@ -95,16 +109,7 @@ public class CustomerDAO {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                Customer c = new Customer();
-                c.setId(rs.getInt("id"));
-                c.setIdCard(rs.getString("id_card"));
-                c.setFirstName(rs.getString("first_name"));
-                c.setLastName1(rs.getString("last_name1"));
-                c.setLastName2(rs.getString("last_name2"));
-                c.setPhone(rs.getString("phone"));
-                c.setAddress(rs.getString("address"));
-
-                list.add(c);
+                list.add(map(rs));
             }
 
         } catch (Exception e) {
@@ -113,7 +118,7 @@ public class CustomerDAO {
 
         return list;
     }
-    
+
     public List<Customer> search(String text) {
         List<Customer> list = new ArrayList<>();
 
@@ -140,16 +145,7 @@ public class CustomerDAO {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                Customer c = new Customer();
-                c.setId(rs.getInt("id"));
-                c.setIdCard(rs.getString("id_card"));
-                c.setFirstName(rs.getString("first_name"));
-                c.setLastName1(rs.getString("last_name1"));
-                c.setLastName2(rs.getString("last_name2"));
-                c.setPhone(rs.getString("phone"));
-                c.setAddress(rs.getString("address"));
-
-                list.add(c);
+                list.add(map(rs));
             }
 
         } catch (Exception e) {
@@ -158,7 +154,7 @@ public class CustomerDAO {
 
         return list;
     }
-    
+
     public void update(Customer c) {
         String sql = "UPDATE Customer SET id_card=?, first_name=?, last_name1=?, last_name2=?, phone=?, address=? WHERE id=?";
 
@@ -192,5 +188,17 @@ public class CustomerDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private Customer map(ResultSet rs) throws SQLException {
+        Customer c = new Customer();
+        c.setId(rs.getInt("id"));
+        c.setIdCard(rs.getString("id_card"));
+        c.setFirstName(rs.getString("first_name"));
+        c.setLastName1(rs.getString("last_name1"));
+        c.setLastName2(rs.getString("last_name2"));
+        c.setPhone(rs.getString("phone"));
+        c.setAddress(rs.getString("address"));
+        return c;
     }
 }

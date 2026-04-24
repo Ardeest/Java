@@ -33,8 +33,10 @@ public class InitDatabase {
                 first_name TEXT NOT NULL,
                 last_name1 TEXT NOT NULL,
                 last_name2 TEXT,
+                phone TEXT NOT NULL,
 
                 CHECK (length(id_card) = 9 AND id_card GLOB '[0-9]*'),
+                CHECK (length(phone) = 8 AND phone GLOB '[0-9]*'),
                 CHECK (length(first_name) <= 50),
                 CHECK (length(last_name1) <= 50),
                 CHECK (length(last_name2) <= 50)

@@ -1,4 +1,4 @@
-package Tests;
+package Customer;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -7,9 +7,8 @@ import static org.junit.Assert.*;
 import Data.DatabaseConnection;
 import Data.DataAccessObject.CustomerDAO;
 import Data.Models.Customer;
+import Data.InitDatabase;
 
-import java.sql.Connection;
-import java.sql.Statement;
 import java.util.List;
 
 import org.junit.After;
@@ -20,27 +19,18 @@ public class CustomerDAOTest {
     private CustomerDAO dao;
 
     @Before
-    public void setup() throws Exception {
+    public void setup() {
 
         DatabaseConnection.setUrl("jdbc:sqlite:test.db");
 
-        Connection conn = DatabaseConnection.connect();
+        // borrar DB anterior
+        File db = new File("test.db");
+        if (db.exists()) {
+            db.delete();
+        }
 
-        Statement stmt = conn.createStatement();
-
-        stmt.execute("DROP TABLE IF EXISTS Customer");
-
-        stmt.execute("""
-            CREATE TABLE Customer (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                id_card TEXT,
-                first_name TEXT,
-                last_name1 TEXT,
-                last_name2 TEXT,
-                phone TEXT,
-                address TEXT
-            )
-        """);
+        // crear estructura real
+        InitDatabase.init();
 
         dao = new CustomerDAO();
     }

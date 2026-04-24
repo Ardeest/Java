@@ -1,27 +1,26 @@
 package Panels;
 
-import Panels.*;
 import java.awt.CardLayout;
-import java.awt.Color;
 import javax.swing.JButton;
+
 
 public class MainPanel extends javax.swing.JFrame {
     
     private final ClientsPanel clientsPanel;
     private final WorksPanel worksPanel;
     private final LogsPanel logsPanel;
-    private final TechnicsPanel technicsPanel;
+    private final TechniciansPanel techniciansPanel;
     
     public MainPanel() {
         initComponents();
 
         clientsPanel = new ClientsPanel();
         worksPanel = new WorksPanel();
-        technicsPanel = new TechnicsPanel();
+        techniciansPanel = new TechniciansPanel();
         logsPanel = new LogsPanel();
 
         displayPanel.add(clientsPanel, "clients");
-        displayPanel.add(technicsPanel, "technics");
+        displayPanel.add(techniciansPanel, "technics");
         displayPanel.add(worksPanel, "works");
         displayPanel.add(logsPanel, "logs");
         
@@ -35,83 +34,84 @@ public class MainPanel extends javax.swing.JFrame {
     } 
 
     private void setActive(JButton active) {
-        JButton[] buttons = {clientsButton, technicsButton, worksButton, logsButton};
 
-        for (JButton b : buttons) {
-            b.setBackground(new Color(180, 180, 180));
-        }
-
-        active.setBackground(Color.WHITE);
     }
+
         
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         MenuPanel = new javax.swing.JPanel();
+        displayPanel = new javax.swing.JPanel();
+        ButtonPanel = new javax.swing.JPanel();
         clientsButton = new javax.swing.JButton();
         technicsButton = new javax.swing.JButton();
         worksButton = new javax.swing.JButton();
         logsButton = new javax.swing.JButton();
-        displayPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Empresa");
         setBackground(new java.awt.Color(255, 255, 255));
-        setMinimumSize(new java.awt.Dimension(1000, 500));
-        setSize(new java.awt.Dimension(500, 500));
+        setMinimumSize(new java.awt.Dimension(800, 600));
+        setPreferredSize(new java.awt.Dimension(700, 400));
+        setSize(new java.awt.Dimension(1000, 800));
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
-        MenuPanel.setBackground(new java.awt.Color(51, 51, 51));
+        MenuPanel.setBackground(new java.awt.Color(255, 255, 255));
+        MenuPanel.setPreferredSize(new java.awt.Dimension(0, 0));
+
+        displayPanel.setBackground(new java.awt.Color(255, 255, 255));
+        displayPanel.setPreferredSize(new java.awt.Dimension(900, 800));
+        displayPanel.setLayout(new java.awt.CardLayout());
+
+        ButtonPanel.setMinimumSize(new java.awt.Dimension(100, 400));
+        ButtonPanel.setPreferredSize(new java.awt.Dimension(100, 500));
 
         clientsButton.setBackground(new java.awt.Color(204, 204, 204));
         clientsButton.setText("Clientes");
-        clientsButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         clientsButton.setBorderPainted(false);
-        clientsButton.setContentAreaFilled(false);
-        clientsButton.setFocusPainted(false);
-        clientsButton.setOpaque(true);
+        clientsButton.setPreferredSize(new java.awt.Dimension(70, 23));
+        clientsButton.setSelected(true);
         clientsButton.addActionListener(this::clientsButtonActionPerformed);
 
         technicsButton.setText("Técnicos");
-        technicsButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         technicsButton.setBorderPainted(false);
-        technicsButton.setContentAreaFilled(false);
-        technicsButton.setFocusPainted(false);
-        technicsButton.setOpaque(true);
         technicsButton.addActionListener(this::technicsButtonActionPerformed);
 
         worksButton.setText("Trabajos");
-        worksButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         worksButton.setBorderPainted(false);
-        worksButton.setContentAreaFilled(false);
-        worksButton.setFocusPainted(false);
-        worksButton.setOpaque(true);
         worksButton.addActionListener(this::worksButtonActionPerformed);
 
         logsButton.setText("Historial");
-        logsButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         logsButton.setBorderPainted(false);
-        logsButton.setContentAreaFilled(false);
-        logsButton.setFocusPainted(false);
-        logsButton.setOpaque(true);
+        logsButton.setDefaultCapable(false);
         logsButton.addActionListener(this::logsButtonActionPerformed);
 
-        javax.swing.GroupLayout MenuPanelLayout = new javax.swing.GroupLayout(MenuPanel);
-        MenuPanel.setLayout(MenuPanelLayout);
-        MenuPanelLayout.setHorizontalGroup(
-            MenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(MenuPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(MenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(logsButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(worksButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(technicsButton, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
-                    .addComponent(clientsButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        javax.swing.GroupLayout ButtonPanelLayout = new javax.swing.GroupLayout(ButtonPanel);
+        ButtonPanel.setLayout(ButtonPanelLayout);
+        ButtonPanelLayout.setHorizontalGroup(
+            ButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ButtonPanelLayout.createSequentialGroup()
+                .addGroup(ButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ButtonPanelLayout.createSequentialGroup()
+                        .addGap(5, 5, 5)
+                        .addComponent(clientsButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(ButtonPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(technicsButton, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE))
+                    .addGroup(ButtonPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(worksButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(ButtonPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(logsButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
-        MenuPanelLayout.setVerticalGroup(
-            MenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(MenuPanelLayout.createSequentialGroup()
-                .addGap(5, 5, 5)
+        ButtonPanelLayout.setVerticalGroup(
+            ButtonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ButtonPanelLayout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(clientsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(technicsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -119,13 +119,25 @@ public class MainPanel extends javax.swing.JFrame {
                 .addComponent(worksButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(logsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(380, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout MenuPanelLayout = new javax.swing.GroupLayout(MenuPanel);
+        MenuPanel.setLayout(MenuPanelLayout);
+        MenuPanelLayout.setHorizontalGroup(
+            MenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(MenuPanelLayout.createSequentialGroup()
+                .addComponent(ButtonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(displayPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE))
+        );
+        MenuPanelLayout.setVerticalGroup(
+            MenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(ButtonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 586, Short.MAX_VALUE)
+            .addComponent(displayPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 586, Short.MAX_VALUE)
         );
 
         getContentPane().add(MenuPanel);
-
-        displayPanel.setLayout(new java.awt.CardLayout());
-        getContentPane().add(displayPanel);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -157,6 +169,7 @@ public class MainPanel extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel ButtonPanel;
     private javax.swing.JPanel MenuPanel;
     private javax.swing.JButton clientsButton;
     private javax.swing.JPanel displayPanel;

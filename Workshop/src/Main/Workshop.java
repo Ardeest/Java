@@ -7,7 +7,7 @@ public class Workshop {
     public static void main(String args[]) {
 
         try {
-            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+            UIManager.setLookAndFeel(new com.formdev.flatlaf.FlatLightLaf());
         } catch (Exception e) {
             e.printStackTrace();
         }

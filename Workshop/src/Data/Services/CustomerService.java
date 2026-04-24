@@ -21,6 +21,10 @@ public class CustomerService {
     public List<Customer> getAll() {
         return dao.getAll();
     }
+    
+    public Customer getById(int id) {
+        return dao.getById(id);
+    }
  
     // Buscar cliente por cédula, nombres o teléfono
     public List<Customer> search(String text) {
