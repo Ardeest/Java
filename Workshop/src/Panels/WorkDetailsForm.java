@@ -1,9 +1,76 @@
 package Panels;
 
-public class WorkDetailsForm extends javax.swing.JPanel {
+import Data.Models.Customer;
+import Data.Models.Technician;
+import Data.Models.Work;
+import Data.Models.WorkStatus;
+import Data.Services.CustomerService;
+import Data.Services.TechnicianService;
+import Data.Services.WorkService;
+import java.time.LocalDate;
+import javax.swing.JOptionPane;
 
-    public WorkDetailsForm() {
+public class WorkDetailsForm extends javax.swing.JPanel {
+    
+    private Work work;
+    private boolean confirmed = false;
+    private int selectedTechnicianId = -1;
+    private int selectedCustomerId = -1;
+    
+    public WorkDetailsForm(Work existingWork) {
         initComponents();
+        // Verifica si es una edición (existingWork) o una creación (null)
+        this.work = (existingWork != null) ? existingWork : new Work();
+        setupComboBox();
+        setupData();
+    }
+    
+    private void setupComboBox() {
+        // Limpia el combo
+        jComboBox1.removeAllItems();
+
+        // Carga el objeto Enum directamente, no el String
+        for (WorkStatus status : WorkStatus.values()) {
+            jComboBox1.addItem(status);
+        }
+    }
+    
+    private void setupData() {
+        if (work.getId() != 0) {
+            // MODO EDICIÓN
+            selectedTechnicianId = work.getTechnicianId();
+            selectedCustomerId = work.getCustomerId();
+
+            Technician tech = new TechnicianService().getById(selectedTechnicianId);
+            Customer cust = new CustomerService().getById(selectedCustomerId);
+
+            technicianTextField.setText(tech != null ? tech.getFirstName() + " " + tech.getLastName1() : "");
+            CustomerTextField.setText(cust != null ? cust.getFirstName() + " " + cust.getLastName1() : "");
+
+            DescriptionTextField.setText(work.getDescription());
+
+            // CORRECCIÓN: Manejo de fecha y hora
+            if (work.getDateTime() != null) {
+                dateTimePicker1.getDatePicker().setDate(work.getDateTime().toLocalDate());
+                dateTimePicker1.getTimePicker().setTime(work.getDateTime().toLocalTime());
+            }
+
+            jComboBox1.setSelectedItem(work.getStatus());
+        } else {
+            // MODO CREACIÓN
+            dateTimePicker1.getDatePicker().setDate(java.time.LocalDate.now());
+            dateTimePicker1.getTimePicker().setTime(java.time.LocalTime.now());
+            jComboBox1.setSelectedItem(WorkStatus.PENDING);
+        }
+    }
+    
+    // ==================== GETTERS ====================
+    public boolean isConfirmed() {
+        return confirmed;
+    }
+
+    public Work getWork() {
+        return work;
     }
 
     @SuppressWarnings("unchecked")
@@ -31,8 +98,6 @@ public class WorkDetailsForm extends javax.swing.JPanel {
 
         AssignCustomerButton.setText("Asignar Cliente");
         AssignCustomerButton.addActionListener(this::AssignCustomerButtonActionPerformed);
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         saveButton.setText("Guardar");
         saveButton.addActionListener(this::saveButtonActionPerformed);
@@ -91,23 +156,91 @@ public class WorkDetailsForm extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void technicianTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_technicianTextFieldActionPerformed
-        
+
     }//GEN-LAST:event_technicianTextFieldActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here:
+        confirmed = false;
+        javax.swing.SwingUtilities.getWindowAncestor(this).dispose();
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void AssignTechnicianButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AssignTechnicianButtonActionPerformed
-        // TODO add your handling code here:
+    AssignTechnicianForm form = new AssignTechnicianForm(techId -> {
+           selectedTechnicianId = techId;
+           Technician t = new TechnicianService().getById(techId);
+           if (t != null) {
+               technicianTextField.setText(t.getFirstName() + " " + t.getLastName1());
+           }
+       });
+
+       // Cambia la creación a 'null' para evitar errores de jerarquía
+       javax.swing.JDialog dialog = new javax.swing.JDialog((java.awt.Frame) null, "Seleccionar Técnico", true);
+
+       dialog.setContentPane(form);
+       dialog.pack();
+       dialog.setLocationRelativeTo(null); // Esto lo centra en la pantalla
+       dialog.setVisible(true);
     }//GEN-LAST:event_AssignTechnicianButtonActionPerformed
 
     private void AssignCustomerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AssignCustomerButtonActionPerformed
-        // TODO add your handling code here:
+        AssignCustomerForm form = new AssignCustomerForm(custId -> {
+            selectedCustomerId = custId;
+            Customer c = new CustomerService().getById(custId);
+            if (c != null) {
+                CustomerTextField.setText(c.getFirstName() + " " + c.getLastName1());
+            }
+        });
+
+        javax.swing.JDialog dialog = new javax.swing.JDialog((java.awt.Frame) null, "Seleccionar Cliente", true);
+        dialog.setContentPane(form);
+        dialog.pack();
+        dialog.setLocationRelativeTo(javax.swing.SwingUtilities.getWindowAncestor(this));
+        dialog.setVisible(true);
     }//GEN-LAST:event_AssignCustomerButtonActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        // TODO add your handling code here:
+
+        // Validación de campos
+        if (selectedTechnicianId <= 0) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un técnico");
+            return;
+        }
+        if (selectedCustomerId <= 0) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un cliente");
+            return;
+        }
+        if (DescriptionTextField.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar una descripción");
+            return;
+        }
+
+        // CORRECCIÓN: Obtener fecha y hora por separado
+        var date = dateTimePicker1.getDatePicker().getDate();
+        var time = dateTimePicker1.getTimePicker().getTime();
+
+        if (date == null || time == null) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una fecha y hora válidas");
+            return;
+        }
+
+        // Llenar datos del trabajo
+        work.setTechnicianId(selectedTechnicianId);
+        work.setCustomerId(selectedCustomerId);
+        work.setDescription(DescriptionTextField.getText().trim());
+        work.setDateTime(java.time.LocalDateTime.of(date, time)); // Combinar fecha y hora
+        work.setStatus((WorkStatus) jComboBox1.getSelectedItem());
+
+        // Guardar en BD
+        WorkService service = new WorkService();
+        var result = work.getId() == 0 ? service.create(work) : service.update(work);
+
+        if (result.isSuccess()) {
+            confirmed = true;
+            javax.swing.SwingUtilities.getWindowAncestor(this).dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, result.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
     }//GEN-LAST:event_saveButtonActionPerformed
 
 
@@ -118,7 +251,7 @@ public class WorkDetailsForm extends javax.swing.JPanel {
     private javax.swing.JTextField DescriptionTextField;
     private javax.swing.JButton cancelButton;
     private com.github.lgooddatepicker.components.DateTimePicker dateTimePicker1;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<WorkStatus> jComboBox1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JButton saveButton;
     private javax.swing.JTextField technicianTextField;

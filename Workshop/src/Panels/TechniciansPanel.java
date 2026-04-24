@@ -5,6 +5,7 @@ import Data.Models.Technician;
 import Data.Models.WorkDTO;
 import Data.Services.TechnicianService;
 import Data.Services.WorkService;
+import Panels.MainPanel.DataUpdateListener;
 import java.awt.Color;
 import java.util.List;
 import javax.swing.JTextField;
@@ -18,6 +19,7 @@ public class TechniciansPanel extends javax.swing.JPanel {
 
     private Map<JTextField, String> placeholders = new HashMap<>();
     private int selectedId = -1;
+    private DataUpdateListener listener;
 
     public TechniciansPanel() {
         initComponents();
@@ -51,6 +53,10 @@ public class TechniciansPanel extends javax.swing.JPanel {
 
         loadTable();
     }
+    
+        public void setListener(DataUpdateListener listener) {
+            this.listener = listener;
+        }
 
     // ================= TABLE =================
 
@@ -102,7 +108,7 @@ public class TechniciansPanel extends javax.swing.JPanel {
         for (WorkDTO w : list) {
             model.addRow(new Object[]{
                     w.getCustomerName(),
-                    w.getDate(),
+                    w.getDateTime(),
                     w.getStatus(),
                     w.getDescription()
             });
@@ -146,6 +152,10 @@ public class TechniciansPanel extends javax.swing.JPanel {
             loadTable();
             clearFields();
         }
+        
+        if (this.listener != null) {
+            this.listener.onUpdate();
+        }
     }
 
     private void updateTechnician() {
@@ -170,6 +180,10 @@ public class TechniciansPanel extends javax.swing.JPanel {
             clearFields();
             selectedId = -1;
         }
+        
+        if (this.listener != null) {
+            this.listener.onUpdate();
+        }
     }
 
     private void deleteTechnician() {
@@ -185,6 +199,10 @@ public class TechniciansPanel extends javax.swing.JPanel {
             loadTable();
             clearFields();
             selectedId = -1;
+        }
+        
+        if (this.listener != null) {
+            this.listener.onUpdate();
         }
     }
 

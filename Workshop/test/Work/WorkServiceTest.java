@@ -32,7 +32,7 @@ public class WorkServiceTest {
         assertTrue(result.isSuccess());
         verify(dao).insert(w);
 
-        assertNotNull(w.getDate());
+        assertNotNull(w.getDateTime());
         assertEquals(WorkStatus.PENDING, w.getStatus());
     }
 

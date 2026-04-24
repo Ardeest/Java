@@ -10,12 +10,12 @@ import Data.DataAccessObject.WorkDAO;
 import Data.DataAccessObject.CustomerDAO;
 import Data.DataAccessObject.TechnicianDAO;
 import Data.Models.*;
-
-import java.time.LocalDate;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.junit.After;
 import java.io.File;
+import java.time.LocalDateTime;
 
 public class WorkDAOTest {
 
@@ -64,7 +64,7 @@ public class WorkDAOTest {
     @Test
     public void shouldInsertAndRetrieveWork() {
 
-        Work w = new Work(customerId, technicianId, "Fix PC", WorkStatus.PENDING, LocalDate.now());
+        Work w = new Work(customerId, technicianId, "Fix PC", WorkStatus.PENDING, LocalDateTime.now());
 
         dao.insert(w);
 
@@ -77,7 +77,7 @@ public class WorkDAOTest {
     @Test
     public void shouldUpdateWork() {
 
-        Work w = new Work(customerId, technicianId, "Original", WorkStatus.PENDING, LocalDate.now());
+        Work w = new Work(customerId, technicianId, "Original", WorkStatus.PENDING, LocalDateTime.now());
 
         dao.insert(w);
 
@@ -94,7 +94,7 @@ public class WorkDAOTest {
     @Test
     public void shouldDeleteWork() {
 
-        Work w = new Work(customerId, technicianId, "Delete", WorkStatus.PENDING, LocalDate.now());
+        Work w = new Work(customerId, technicianId, "Delete", WorkStatus.PENDING, LocalDateTime.now());
 
         dao.insert(w);
 
@@ -108,7 +108,7 @@ public class WorkDAOTest {
     @Test
     public void shouldFilterByTechnician() {
 
-        Work w = new Work(customerId, technicianId, "Task", WorkStatus.PENDING, LocalDate.now());
+        Work w = new Work(customerId, technicianId, "Task", WorkStatus.PENDING, LocalDateTime.now());
 
         dao.insert(w);
 
@@ -120,7 +120,7 @@ public class WorkDAOTest {
     @Test
     public void shouldStoreEnumCorrectly() {
 
-        Work w = new Work(customerId, technicianId, "Task", WorkStatus.DONE, LocalDate.now());
+        Work w = new Work(customerId, technicianId, "Task", WorkStatus.DONE, LocalDateTime.now());
 
         dao.insert(w);
 
@@ -133,7 +133,7 @@ public class WorkDAOTest {
     public void shouldReturnDTOWithNames() {
 
         // insertar work conocido
-        Work w = new Work(customerId, technicianId, "Fix PC", WorkStatus.PENDING, LocalDate.now());
+        Work w = new Work(customerId, technicianId, "Fix PC", WorkStatus.PENDING, LocalDateTime.now());
         dao.insert(w);
 
         List<WorkDTO> result = dao.searchWithDetails("Fix");

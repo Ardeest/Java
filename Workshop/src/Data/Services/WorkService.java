@@ -60,8 +60,8 @@ public class WorkService {
         }
 
         // reglas de negocio
-        if (w.getDate() == null) {
-            w.setDate(LocalDate.now());
+        if (w.getDateTime() == null) {
+            w.setDateTime(java.time.LocalDateTime.now());
         }
 
         if (w.getStatus() == null) {

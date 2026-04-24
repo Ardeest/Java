@@ -3,6 +3,7 @@ package Panels;
 import javax.swing.table.DefaultTableModel;
 import Data.Models.Customer;
 import Data.Services.CustomerService;
+import Panels.MainPanel.DataUpdateListener;
 import java.awt.Color;
 import java.util.List;
 import javax.swing.JTextField;
@@ -15,6 +16,7 @@ import javax.swing.text.AbstractDocument;
 
     private Map<JTextField, String> placeholders = new HashMap<>();
     private int selectedId = -1;
+    private DataUpdateListener listener;
 
     public ClientsPanel() {
         initComponents();
@@ -49,6 +51,10 @@ import javax.swing.text.AbstractDocument;
 
         loadTable();
     }
+    
+    public void setListener(DataUpdateListener listener) {
+        this.listener = listener;
+    }
 
     // ===================== LOAD TABLE =====================
     private void loadTable() {
@@ -57,13 +63,14 @@ import javax.swing.text.AbstractDocument;
     }
 
     private void fillTable(List<Customer> list) {
+
         DefaultTableModel model = new DefaultTableModel();
 
         model.addColumn("ID");
         model.addColumn("Cédula");
         model.addColumn("Nombre");
-        model.addColumn("Primer Apellido");
-        model.addColumn("Segundo Apellido");
+        model.addColumn("Apellido 1");
+        model.addColumn("Apellido 2");
         model.addColumn("Teléfono");
         model.addColumn("Dirección");
 
@@ -122,6 +129,10 @@ import javax.swing.text.AbstractDocument;
             loadTable();
             clearFields();
         }
+        
+        if (this.listener != null) {
+            this.listener.onUpdate();
+        }
     }
 
     // ===================== UPDATE =====================
@@ -147,6 +158,10 @@ import javax.swing.text.AbstractDocument;
             clearFields();
             selectedId = -1;
         }
+        
+        if (this.listener != null) {
+            this.listener.onUpdate();
+        }
     }
 
     // ===================== DELETE =====================
@@ -162,6 +177,10 @@ import javax.swing.text.AbstractDocument;
             loadTable();
             clearFields();
             selectedId = -1;
+        }
+        
+        if (this.listener != null) {
+            this.listener.onUpdate();
         }
     }
 
@@ -378,7 +397,7 @@ import javax.swing.text.AbstractDocument;
                 return canEdit [columnIndex];
             }
         });
-        tableCustomer.setPreferredSize(new java.awt.Dimension(0, 0));
+        tableCustomer.setPreferredSize(new java.awt.Dimension(1000, 1000));
         tableCustomer.setShowGrid(false);
         jScrollPane2.setViewportView(tableCustomer);
         tableCustomer.getAccessibleContext().setAccessibleDescription("");
@@ -545,6 +564,7 @@ import javax.swing.text.AbstractDocument;
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         deleteCustomer();
+        
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void nameTextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nameTextFieldFocusGained

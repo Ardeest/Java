@@ -95,13 +95,17 @@ public class CustomerService {
 
     // DELETE
     public Result delete(int id) {
-
         if (id <= 0) {
             return new Result(false, "ID inválido");
         }
 
-        dao.delete(id);
-        return new Result(true, "Cliente eliminado correctamente");
+        try {
+            dao.delete(id);
+            return new Result(true, "Cliente eliminado correctamente");
+        } catch (Exception e) {
+
+            return new Result(false, "No se puede eliminar: El cliente tiene trabajos asociados.");
+        }
     }
 
     private boolean isEmpty(String s) {

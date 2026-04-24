@@ -3,7 +3,7 @@ package Customer;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-
+import java.sql.SQLException;
 import Data.DatabaseConnection;
 import Data.DataAccessObject.CustomerDAO;
 import Data.Models.Customer;
@@ -90,7 +90,7 @@ public class CustomerDAOTest {
     }
     
     @Test
-    public void deberiaEliminarCliente() {
+    public void deberiaEliminarCliente() throws SQLException {
 
         Customer c = new Customer();
         c.setIdCard("444444444");

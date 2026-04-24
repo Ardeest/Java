@@ -1,6 +1,6 @@
 package Data.Models;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Work {
 
@@ -9,16 +9,16 @@ public class Work {
     private int technicianId;
     private String description;
     private WorkStatus status;
-    private LocalDate date;
+    private LocalDateTime dateTime;
 
     public Work() {}
 
-    public Work(int customerId, int technicianId, String description, WorkStatus status, LocalDate date) {
+    public Work(int customerId, int technicianId, String description, WorkStatus status, LocalDateTime dateTime) {
         this.customerId = customerId;
         this.technicianId = technicianId;
         this.description = description;
         this.status = status;
-        this.date = date;
+        this.dateTime = dateTime;
     }
 
     // getters y setters
@@ -37,6 +37,6 @@ public class Work {
     public WorkStatus getStatus() { return status; }
     public void setStatus(WorkStatus status) { this.status = status; }
 
-    public LocalDate getDate() { return date; }
-    public void setDate(LocalDate date) { this.date = date; }
+    public LocalDateTime getDateTime() { return dateTime; }
+    public void setDateTime(LocalDateTime dateTime) { this.dateTime = dateTime; }
 }

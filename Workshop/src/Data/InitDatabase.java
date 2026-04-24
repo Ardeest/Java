@@ -50,7 +50,7 @@ public class InitDatabase {
                 technician_id INTEGER NOT NULL,
                 description TEXT NOT NULL,
                 status TEXT NOT NULL,
-                date TEXT,
+                date_time TEXT NOT NULL,
 
                 CHECK (length(description) <= 255),
                 CHECK (status IN ('PENDING', 'IN_PROGRESS', 'DONE')),

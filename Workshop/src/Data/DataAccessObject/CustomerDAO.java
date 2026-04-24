@@ -176,18 +176,15 @@ public class CustomerDAO {
         }
     }
 
-    public void delete(int id) {
+    public void delete(int id) throws SQLException { // <--- Agrega 'throws SQLException'
         String sql = "DELETE FROM Customer WHERE id = ?";
-
         try (Connection conn = DatabaseConnection.connect();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, id);
-            stmt.executeUpdate();
+            pstmt.setInt(1, id);
+            pstmt.executeUpdate();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } // NO pongas catch aquí dentro
     }
 
     private Customer map(ResultSet rs) throws SQLException {

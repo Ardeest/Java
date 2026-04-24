@@ -3,7 +3,7 @@ package Technician;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
-
+import java.sql.SQLException;
 import Data.DataAccessObject.TechnicianDAO;
 import Data.Models.Technician;
 import Data.Services.TechnicianService;
@@ -21,6 +21,7 @@ public class TechnicianServiceTest {
         t.setIdCard("123456789");
         t.setFirstName("Juan");
         t.setLastName1("Perez");
+        t.setPhone("12345678");
 
         Result result = service.addTechnician(t);
 
@@ -67,6 +68,7 @@ public class TechnicianServiceTest {
         t.setIdCard("123456789");
         t.setFirstName("X".repeat(60)); // > 50
         t.setLastName1("Perez");
+        t.setPhone("123456789");
 
         Result result = service.addTechnician(t);
 
@@ -85,6 +87,7 @@ public class TechnicianServiceTest {
         t.setIdCard("123456789");
         t.setFirstName("Juan");
         t.setLastName1("Perez");
+        t.setPhone("12345678");
 
         Result result = service.update(t);
 
@@ -126,7 +129,7 @@ public class TechnicianServiceTest {
     }
 
     @Test
-    public void shouldDeleteTechnician() {
+    public void shouldDeleteTechnician() throws SQLException{
 
         TechnicianDAO dao = mock(TechnicianDAO.class);
         TechnicianService service = new TechnicianService(dao);
@@ -138,7 +141,7 @@ public class TechnicianServiceTest {
     }
 
     @Test
-    public void shouldFailDeleteInvalidId() {
+    public void shouldFailDeleteInvalidId() throws SQLException {
 
         TechnicianDAO dao = mock(TechnicianDAO.class);
         TechnicianService service = new TechnicianService(dao);

@@ -1,7 +1,6 @@
 package Data.Models;
 
-import java.time.LocalDate;
-import Data.Models.WorkStatus;
+import java.time.LocalDateTime;
 
 public class WorkDTO {
 
@@ -10,7 +9,7 @@ public class WorkDTO {
     private String technicianName;
     private String description;
     private WorkStatus status;
-    private LocalDate date;
+    private LocalDateTime dateTime;
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
@@ -27,6 +26,6 @@ public class WorkDTO {
     public WorkStatus getStatus() { return status; }
     public void setStatus(WorkStatus status) { this.status = status; }
 
-    public LocalDate getDate() { return date; }
-    public void setDate(LocalDate date) { this.date = date; }
+    public LocalDateTime getDateTime() { return dateTime; }
+    public void setDateTime(LocalDateTime dateTime) { this.dateTime = dateTime; }
 }

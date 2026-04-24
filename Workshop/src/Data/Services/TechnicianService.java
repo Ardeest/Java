@@ -100,19 +100,23 @@ public class TechnicianService {
         dao.update(t);
         return new Result(true, "Técnico actualizado correctamente");
     }
-
+    
     // DELETE
     public Result delete(int id) {
-
         if (id <= 0) {
             return new Result(false, "ID inválido");
         }
 
-        dao.delete(id);
-        return new Result(true, "Técnico eliminado correctamente");
+        try {
+            dao.delete(id);
+            return new Result(true, "Técnico eliminado correctamente");
+        } catch (Exception e) {
+            // SQLite lanza una SQLException si hay registros asociados (Foreign Key Violation)
+            return new Result(false, "No se puede eliminar: El técnico tiene trabajos asociados.");
+        }
     }
     
-        // Buscar cliente por cédula, nombres o teléfono
+    // Buscar cliente por cédula, nombres o teléfono
     public List<Technician> search(String text) {
         if (text == null || text.trim().isEmpty()) {
             return dao.getAll();

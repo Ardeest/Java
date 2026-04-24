@@ -3,7 +3,7 @@ package Technician;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-
+import java.sql.SQLException;
 import Data.DatabaseConnection;
 import Data.InitDatabase;
 import Data.DataAccessObject.TechnicianDAO;
@@ -78,7 +78,7 @@ public class TechnicianDAOTest {
     }
 
     @Test
-    public void shouldDeleteTechnician() {
+    public void shouldDeleteTechnician() throws SQLException {
 
         Technician t = new Technician("333333333", "Delete", "User", null, "12345678");
 

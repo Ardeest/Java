@@ -53,7 +53,7 @@ public class AssignWorkForm extends javax.swing.JPanel {
                 w.getCustomerId(),
                 w.getTechnicianId(),
                 w.getStatus(),
-                w.getDate(),
+                w.getDateTime(),
                 w.getDescription()
             });
         }

@@ -3,7 +3,7 @@ package Customer;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
-
+import java.sql.SQLException;
 import Data.Services.CustomerService;
 import Data.DataAccessObject.CustomerDAO;
 import Data.Models.Customer;
@@ -215,7 +215,7 @@ public class CustomerServiceTest {
     
     // DELETE TESTS
     @Test
-    public void tryDeleteCustomer() {
+    public void tryDeleteCustomer() throws SQLException {
 
         CustomerDAO dao = mock(CustomerDAO.class);
         CustomerService service = new CustomerService(dao);
@@ -227,7 +227,24 @@ public class CustomerServiceTest {
     }
     
     @Test
-    public void tryDeleteInvalidId() {
+    public void shouldFailWhenCustomerHasActiveWorks() throws SQLException {
+        CustomerDAO dao = mock(CustomerDAO.class);
+        CustomerService service = new CustomerService(dao);
+
+        // 1. Simulamos que el DAO lanza una excepción de SQL al intentar borrar (Constraint Violation)
+        doThrow(new SQLException("Foreign Key Constraint"))
+            .when(dao).delete(999); // Suponemos que el cliente 999 tiene trabajos
+
+        // 2. Ejecutamos el servicio
+        Result r = service.delete(999);
+
+        // 3. Verificamos que el sistema NO dio éxito y que manejó el error
+        assertFalse(r.isSuccess());
+        verify(dao).delete(999);
+    }
+
+    @Test
+    public void tryDeleteInvalidId() throws SQLException {
 
         CustomerDAO dao = mock(CustomerDAO.class);
         CustomerService service = new CustomerService(dao);

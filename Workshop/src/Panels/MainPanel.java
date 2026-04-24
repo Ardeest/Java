@@ -18,7 +18,8 @@ public class MainPanel extends javax.swing.JFrame {
         worksPanel = new WorksPanel();
         techniciansPanel = new TechniciansPanel();
         logsPanel = new LogsPanel();
-
+        clientsPanel.setListener(() -> worksPanel.refreshData());
+        techniciansPanel.setListener(() -> worksPanel.refreshData());
         displayPanel.add(clientsPanel, "clients");
         displayPanel.add(techniciansPanel, "technics");
         displayPanel.add(worksPanel, "works");
@@ -35,6 +36,10 @@ public class MainPanel extends javax.swing.JFrame {
 
     private void setActive(JButton active) {
 
+    }
+    
+    public interface DataUpdateListener {
+        void onUpdate();
     }
 
         
@@ -68,11 +73,10 @@ public class MainPanel extends javax.swing.JFrame {
         ButtonPanel.setMinimumSize(new java.awt.Dimension(100, 400));
         ButtonPanel.setPreferredSize(new java.awt.Dimension(100, 500));
 
-        clientsButton.setBackground(new java.awt.Color(204, 204, 204));
         clientsButton.setText("Clientes");
         clientsButton.setBorderPainted(false);
+        clientsButton.setOpaque(false);
         clientsButton.setPreferredSize(new java.awt.Dimension(70, 23));
-        clientsButton.setSelected(true);
         clientsButton.addActionListener(this::clientsButtonActionPerformed);
 
         technicsButton.setText("Técnicos");
