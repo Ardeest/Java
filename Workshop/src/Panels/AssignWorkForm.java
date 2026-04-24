@@ -41,22 +41,20 @@ public class AssignWorkForm extends javax.swing.JPanel {
         DefaultTableModel model = new DefaultTableModel();
 
         model.addColumn("ID");
-        model.addColumn("Cédula");
-        model.addColumn("Nombre");
-        model.addColumn("Apellido 1");
-        model.addColumn("Apellido 2");
-        model.addColumn("Teléfono");
-        model.addColumn("Dirección");
+        model.addColumn("Cliente ID");
+        model.addColumn("Técnico ID");
+        model.addColumn("Estado");
+        model.addColumn("Fecha");
+        model.addColumn("Descripción");
 
-        for (Work c : list) {
+        for (Work w : list) {
             model.addRow(new Object[]{
-                    c.getId(),
-                    c.getIdCard(),
-                    c.getFirstName(),
-                    c.getLastName1(),
-                    c.getLastName2(),
-                    c.getPhone(),
-                    c.getAddress()
+                w.getId(),
+                w.getCustomerId(),
+                w.getTechnicianId(),
+                w.getStatus(),
+                w.getDate(),
+                w.getDescription()
             });
         }
 
@@ -65,6 +63,7 @@ public class AssignWorkForm extends javax.swing.JPanel {
         tableWork.getColumnModel().getColumn(0).setMinWidth(0);
         tableWork.getColumnModel().getColumn(0).setMaxWidth(0);
     }
+    
 
     // ===================== SEARCH =====================
     private void searchWork() {
@@ -74,22 +73,21 @@ public class AssignWorkForm extends javax.swing.JPanel {
         List<Work> list;
 
         if (text.isBlank()) {
-            list = service.getAll();
+            //list = service.getAll();
         } else {
-            list = service.search(text);
+            // list = service.search(text);
 
-            if (list.isEmpty()) {
-                javax.swing.JOptionPane.showMessageDialog(this, "No se encontraron resultados");
-                list = service.getAll();
-            }
+            //if (list.isEmpty()) {
+            //    javax.swing.JOptionPane.showMessageDialog(this, "No se encontraron resultados");
+            //    list = service.getAll();
+            //}
         }
 
-        fillTable(list);
+        // fillTable(list);
     }
 
     // ================= GET ID =================
     private int getSelectedWorkId() {
-
         int row = tableWork.getSelectedRow();
         if (row == -1) return -1;
 

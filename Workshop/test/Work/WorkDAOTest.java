@@ -55,7 +55,7 @@ public class WorkDAOTest {
         customerId = customerDAO.getByIdCard("123456789").getId();
 
         // crear technician
-        Technician t = new Technician("987654321", "Tech", "Test", null);
+        Technician t = new Technician("987654321", "Tech", "Test", null, "12345678");
 
         technicianDAO.insert(t);
         technicianId = technicianDAO.getByIdCard("987654321").getId();

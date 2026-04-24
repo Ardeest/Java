@@ -38,7 +38,7 @@ public class TechnicianDAOTest {
     @Test
     public void shouldInsertAndGetTechnician() {
 
-        Technician t = new Technician("123456789", "Juan", "Perez", null);
+        Technician t = new Technician("123456789", "Juan", "Perez", null, "12345678");
 
         dao.insert(t);
 
@@ -51,7 +51,7 @@ public class TechnicianDAOTest {
     @Test
     public void getAllShouldReturnTechnicians() {
 
-        Technician t = new Technician("111111111", "Test", "User", null);
+        Technician t = new Technician("111111111", "Test", "User", null, "12345678");
 
         dao.insert(t);
 
@@ -63,7 +63,7 @@ public class TechnicianDAOTest {
     @Test
     public void shouldUpdateTechnician() {
 
-        Technician t = new Technician("222222222", "Original", "User", null);
+        Technician t = new Technician("222222222", "Original", "User", null,"12345678");
 
         dao.insert(t);
 
@@ -80,7 +80,7 @@ public class TechnicianDAOTest {
     @Test
     public void shouldDeleteTechnician() {
 
-        Technician t = new Technician("333333333", "Delete", "User", null);
+        Technician t = new Technician("333333333", "Delete", "User", null, "12345678");
 
         dao.insert(t);
 
@@ -96,7 +96,7 @@ public class TechnicianDAOTest {
     @Test
     public void searchShouldFindTechnician() {
 
-        Technician t = new Technician("444444444", "Esteban", "Perez", null);
+        Technician t = new Technician("444444444", "Esteban", "Perez", null, "12345678");
 
         dao.insert(t);
 

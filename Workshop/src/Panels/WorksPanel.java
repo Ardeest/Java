@@ -2,8 +2,10 @@ package Panels;
 
 import Data.Models.Customer;
 import Data.Models.Technician;
+import Data.Models.Work;
 import Data.Services.CustomerService;
 import Data.Services.TechnicianService;
+import Data.Services.WorkService;
 import java.awt.Color;
 
 public class WorksPanel extends javax.swing.JPanel {
@@ -237,7 +239,46 @@ public class WorksPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_nameTextFieldFocusLost
 
     private void assignWorkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_assignWorkButtonActionPerformed
-        // TODO add your handling code here:
+        AssignWorkForm form = new AssignWorkForm(workId -> {
+
+            WorkService service = new WorkService();
+            Work w = service.getById(workId);
+
+            if (w != null) {
+                selectedTechnicianId = w.getTechnicianId();
+                selectedCustomerId = w.getCustomerId();
+
+                TechnicianService tService = new TechnicianService();
+                Technician t = tService.getById(w.getTechnicianId());
+
+                CustomerService cService = new CustomerService();
+                Customer c = cService.getById(w.getCustomerId());
+
+                if (t != null) {
+                    technicianTextField.setText(t.getFirstName() + " " + t.getLastName1());
+                }
+
+                if (c != null) {
+                    customerTextField.setText(c.getFirstName() + " " + c.getLastName1());
+                }
+
+                workTextField.setText(String.valueOf(w.getId()));
+            }
+        });
+
+        java.awt.Frame parent = (java.awt.Frame)
+                javax.swing.SwingUtilities.getWindowAncestor(this);
+
+        javax.swing.JDialog dialog = new javax.swing.JDialog(
+                parent,
+                "Seleccionar trabajo",
+                true
+        );
+
+        dialog.setContentPane(form);
+        dialog.pack();
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
     }//GEN-LAST:event_assignWorkButtonActionPerformed
 
 
