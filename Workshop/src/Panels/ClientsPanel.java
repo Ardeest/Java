@@ -445,7 +445,7 @@ import javax.swing.text.AbstractDocument;
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lastName2Label)
-                        .addGap(0, 257, Short.MAX_VALUE))
+                        .addGap(0, 194, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lastName2TextField)
                         .addContainerGap())))
@@ -483,7 +483,7 @@ import javax.swing.text.AbstractDocument;
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(9, 9, 9)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(searchButton))
@@ -520,7 +520,7 @@ import javax.swing.text.AbstractDocument;
                             .addComponent(updateButton)
                             .addComponent(addButton))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
