@@ -47,7 +47,6 @@ public class MainPanel extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        MenuPanel = new javax.swing.JPanel();
         displayPanel = new javax.swing.JPanel();
         ButtonPanel = new javax.swing.JPanel();
         clientsButton = new javax.swing.JButton();
@@ -61,21 +60,18 @@ public class MainPanel extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(800, 600));
         setPreferredSize(new java.awt.Dimension(700, 400));
         setSize(new java.awt.Dimension(1000, 800));
-        getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
-
-        MenuPanel.setBackground(new java.awt.Color(255, 255, 255));
-        MenuPanel.setPreferredSize(new java.awt.Dimension(0, 0));
 
         displayPanel.setBackground(new java.awt.Color(255, 255, 255));
-        displayPanel.setPreferredSize(new java.awt.Dimension(900, 800));
+        displayPanel.setMinimumSize(new java.awt.Dimension(1000, 550));
+        displayPanel.setPreferredSize(new java.awt.Dimension(1000, 550));
         displayPanel.setLayout(new java.awt.CardLayout());
+        getContentPane().add(displayPanel, java.awt.BorderLayout.CENTER);
 
-        ButtonPanel.setMinimumSize(new java.awt.Dimension(100, 400));
-        ButtonPanel.setPreferredSize(new java.awt.Dimension(100, 500));
+        ButtonPanel.setMinimumSize(new java.awt.Dimension(100, 550));
+        ButtonPanel.setPreferredSize(new java.awt.Dimension(100, 550));
 
         clientsButton.setText("Clientes");
         clientsButton.setBorderPainted(false);
-        clientsButton.setOpaque(false);
         clientsButton.setPreferredSize(new java.awt.Dimension(70, 23));
         clientsButton.addActionListener(this::clientsButtonActionPerformed);
 
@@ -123,25 +119,10 @@ public class MainPanel extends javax.swing.JFrame {
                 .addComponent(worksButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(logsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(366, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout MenuPanelLayout = new javax.swing.GroupLayout(MenuPanel);
-        MenuPanel.setLayout(MenuPanelLayout);
-        MenuPanelLayout.setHorizontalGroup(
-            MenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(MenuPanelLayout.createSequentialGroup()
-                .addComponent(ButtonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(displayPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE))
-        );
-        MenuPanelLayout.setVerticalGroup(
-            MenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(ButtonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 586, Short.MAX_VALUE)
-            .addComponent(displayPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 586, Short.MAX_VALUE)
-        );
-
-        getContentPane().add(MenuPanel);
+        getContentPane().add(ButtonPanel, java.awt.BorderLayout.WEST);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -159,7 +140,6 @@ public class MainPanel extends javax.swing.JFrame {
     private void technicsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_technicsButtonActionPerformed
         showPanel("technics");
         setActive(technicsButton);
-
     }//GEN-LAST:event_technicsButtonActionPerformed
 
     private void clientsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientsButtonActionPerformed
@@ -174,7 +154,6 @@ public class MainPanel extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ButtonPanel;
-    private javax.swing.JPanel MenuPanel;
     private javax.swing.JButton clientsButton;
     private javax.swing.JPanel displayPanel;
     private javax.swing.JButton logsButton;

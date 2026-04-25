@@ -8,16 +8,20 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
-
 public class WorksPanel extends javax.swing.JPanel {
     
     private MainPanel.DataUpdateListener listener;
-    private WorkService workService;
+    private WorkService workService; 
     private int selectedId = -1;
 
+
     public WorksPanel() {
-        initComponents();
-        workService = new WorkService();
+        this(new WorkService()); 
+    }
+
+    public WorksPanel(WorkService workService) {
+        initComponents(); 
+        this.workService = workService;
 
         tableWork.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
@@ -32,6 +36,7 @@ public class WorksPanel extends javax.swing.JPanel {
 
         loadTable();
     }
+    
     public void refreshData() {
         loadTable();
     }
@@ -157,6 +162,8 @@ public class WorksPanel extends javax.swing.JPanel {
         tableWork = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(255, 255, 255));
+        setMinimumSize(new java.awt.Dimension(1000, 550));
+        setPreferredSize(new java.awt.Dimension(1000, 550));
         addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 formMouseClicked(evt);
@@ -164,17 +171,22 @@ public class WorksPanel extends javax.swing.JPanel {
         });
 
         deleteButton.setText("Eliminar");
+        deleteButton.setName("deleteButton"); // NOI18N
         deleteButton.addActionListener(this::deleteButtonActionPerformed);
 
         updateButton.setText("Actualizar");
+        updateButton.setName("updateButton"); // NOI18N
         updateButton.addActionListener(this::updateButtonActionPerformed);
 
         addButton.setText("Agregar");
+        addButton.setName("addButton"); // NOI18N
         addButton.addActionListener(this::addButtonActionPerformed);
 
+        searchTextField.setName("searchTextField"); // NOI18N
         searchTextField.addActionListener(this::searchTextFieldActionPerformed);
 
         searchButton.setText("Buscar");
+        searchButton.setName("searchButton"); // NOI18N
         searchButton.addActionListener(this::searchButtonActionPerformed);
 
         tableWork.setModel(new javax.swing.table.DefaultTableModel(
@@ -188,6 +200,7 @@ public class WorksPanel extends javax.swing.JPanel {
                 "Técnico", "Cliente", "Estatus", "Fecha"
             }
         ));
+        tableWork.setName("tableWork"); // NOI18N
         tableWork.setOpaque(false);
         jScrollPane1.setViewportView(tableWork);
 
@@ -198,39 +211,33 @@ public class WorksPanel extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(addButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(updateButton)
-                        .addGap(4, 4, 4)
-                        .addComponent(deleteButton))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 837, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 988, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(deleteButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(updateButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(addButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(searchTextField)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(searchButton)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(searchButton))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(updateButton)
-                            .addComponent(deleteButton))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(addButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 492, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addButton)
+                    .addComponent(updateButton)
+                    .addComponent(deleteButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents

@@ -18,21 +18,30 @@ import javax.swing.text.AbstractDocument;
     private int selectedId = -1;
     private DataUpdateListener listener;
 
+    private CustomerService customerService;
+
+    // Constructor por defecto (requerido por el editor de diseño de NetBeans)
     public ClientsPanel() {
+        this(new CustomerService());
+    }
+
+    // Constructor con inyección de dependencias (usado para tus tests)
+    public ClientsPanel(CustomerService customerService) {
+        this.customerService = customerService; // Asigna el servicio recibido
         initComponents();
 
+        // Filtros de documentos
         ((AbstractDocument) phoneTextField.getDocument())
                 .setDocumentFilter(new PhoneFilter());
 
         ((AbstractDocument) idTextField.getDocument())
                 .setDocumentFilter(new IdCardFilter());
 
+        // Configuración del listener de la tabla
         tableCustomer.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 loadSelectedRow();
-
                 boolean hasSelection = tableCustomer.getSelectedRow() != -1;
-
                 updateButton.setEnabled(hasSelection);
                 deleteButton.setEnabled(hasSelection);
                 addButton.setEnabled(!hasSelection);
@@ -43,6 +52,7 @@ import javax.swing.text.AbstractDocument;
         updateButton.setEnabled(false);
         deleteButton.setEnabled(false);
 
+        // Inicialización de placeholders
         addPlaceholder(searchTextField, "Buscar");
         addPlaceholder(nameTextField, "Nombre");
         addPlaceholder(lastName1TextField, "Primer Apellido");
@@ -305,20 +315,22 @@ import javax.swing.text.AbstractDocument;
         addButton = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
-        setMaximumSize(new java.awt.Dimension(500, 500));
-        setMinimumSize(new java.awt.Dimension(500, 500));
-        setPreferredSize(new java.awt.Dimension(500, 500));
+        setMinimumSize(new java.awt.Dimension(1000, 550));
+        setPreferredSize(new java.awt.Dimension(1000, 550));
         addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 formMouseClicked(evt);
             }
         });
 
+        searchTextField.setName("searchTextField"); // NOI18N
         searchTextField.addActionListener(this::searchTextFieldActionPerformed);
 
         searchButton.setText("Buscar");
+        searchButton.setName("searchButton"); // NOI18N
         searchButton.addActionListener(this::searchButtonActionPerformed);
 
+        nameTextField.setName("nameTextField"); // NOI18N
         nameTextField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 nameTextFieldFocusGained(evt);
@@ -328,6 +340,7 @@ import javax.swing.text.AbstractDocument;
             }
         });
 
+        lastName1TextField.setName("lastName1TextField"); // NOI18N
         lastName1TextField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 lastName1TextFieldFocusGained(evt);
@@ -337,6 +350,7 @@ import javax.swing.text.AbstractDocument;
             }
         });
 
+        lastName2TextField.setName("lastName2TextField"); // NOI18N
         lastName2TextField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 lastName2TextFieldFocusGained(evt);
@@ -346,6 +360,7 @@ import javax.swing.text.AbstractDocument;
             }
         });
 
+        idTextField.setName("idTextField"); // NOI18N
         idTextField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 idTextFieldFocusGained(evt);
@@ -356,8 +371,10 @@ import javax.swing.text.AbstractDocument;
         });
 
         updateButton.setText("Actualizar");
+        updateButton.setName("updateButton"); // NOI18N
         updateButton.addActionListener(this::updateButtonActionPerformed);
 
+        phoneTextField.setName("phoneTextField"); // NOI18N
         phoneTextField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 phoneTextFieldFocusGained(evt);
@@ -373,9 +390,11 @@ import javax.swing.text.AbstractDocument;
         });
 
         deleteButton.setText("Eliminar");
+        deleteButton.setName("deleteButton"); // NOI18N
         deleteButton.addActionListener(this::deleteButtonActionPerformed);
 
         cleanFieldsButton.setText("Borrar campos");
+        cleanFieldsButton.setName("cleanFieldsButton"); // NOI18N
         cleanFieldsButton.addActionListener(this::cleanFieldsButtonActionPerformed);
 
         tableCustomer.setModel(new javax.swing.table.DefaultTableModel(
@@ -397,11 +416,13 @@ import javax.swing.text.AbstractDocument;
                 return canEdit [columnIndex];
             }
         });
+        tableCustomer.setName("tableCustomer"); // NOI18N
         tableCustomer.setPreferredSize(new java.awt.Dimension(1000, 1000));
         tableCustomer.setShowGrid(false);
         jScrollPane2.setViewportView(tableCustomer);
         tableCustomer.getAccessibleContext().setAccessibleDescription("");
 
+        addressTextField.setName("addressTextField"); // NOI18N
         addressTextField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 addressTextFieldFocusGained(evt);
@@ -435,6 +456,7 @@ import javax.swing.text.AbstractDocument;
         dummy.setPreferredSize(new java.awt.Dimension(0, 0));
 
         addButton.setText("Agregar");
+        addButton.setName("addButton"); // NOI18N
         addButton.addActionListener(this::addButtonActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -464,13 +486,10 @@ import javax.swing.text.AbstractDocument;
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lastName2Label)
-                        .addGap(0, 194, Short.MAX_VALUE))
+                        .addGap(0, 394, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lastName2TextField)
                         .addContainerGap())))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(addressLabel)
-                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -491,18 +510,21 @@ import javax.swing.text.AbstractDocument;
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(searchTextField)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(searchButton))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(idTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(phoneTextField))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addContainerGap())))
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(addressLabel)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(searchButton))
@@ -539,7 +561,7 @@ import javax.swing.text.AbstractDocument;
                             .addComponent(updateButton)
                             .addComponent(addButton))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents

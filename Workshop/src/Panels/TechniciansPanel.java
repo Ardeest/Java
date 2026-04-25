@@ -92,28 +92,31 @@ public class TechniciansPanel extends javax.swing.JPanel {
     }
     
     private void loadTechnicianWorks() {
-
-        if (selectedId == -1) return;
-
+        // 1. Crear un modelo vacío con las columnas necesarias
         DefaultTableModel model = new DefaultTableModel();
-
         model.addColumn("Cliente");
         model.addColumn("Fecha");
-        model.addColumn("Estado");
+        model.addColumn("Estatus");
         model.addColumn("Descripción");
 
-        WorkService service = new WorkService();
-        List<WorkDTO> list = service.getByTechnicianWithDetails(selectedId);
+        // 2. Solo si hay un técnico seleccionado, llenamos el modelo con datos
+        if (selectedId != -1) {
+            WorkService service = new WorkService();
+            List<WorkDTO> list = service.getByTechnicianWithDetails(selectedId);
 
-        for (WorkDTO w : list) {
-            model.addRow(new Object[]{
-                    w.getCustomerName(),
-                    w.getDateTime(),
-                    w.getStatus(),
-                    w.getDescription()
-            });
+            java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+            for (WorkDTO w : list) {
+                model.addRow(new Object[]{
+                        w.getCustomerName(),
+                        w.getDateTime() != null ? w.getDateTime().format(formatter) : "N/A",
+                        w.getStatus(),
+                        w.getDescription()
+                });
+            }
         }
 
+        // 3. Asignar el modelo (si selectedId == -1, queda vacío; si no, lleno)
         tableWorks.setModel(model);
     }
 
@@ -130,6 +133,7 @@ public class TechniciansPanel extends javax.swing.JPanel {
         phoneTextField.setText(tableTechnician.getValueAt(row, 5).toString());
 
         setBlack();
+        loadTechnicianWorks();
     }
 
     // ================= CRUD =================
@@ -266,6 +270,7 @@ public class TechniciansPanel extends javax.swing.JPanel {
 
         selectedId = -1;
         tableTechnician.clearSelection();
+        loadTechnicianWorks();
     }
 
     private void clearFieldsExceptSearch() {
@@ -331,9 +336,6 @@ public class TechniciansPanel extends javax.swing.JPanel {
 
         searchTextField = new javax.swing.JTextField();
         searchButton = new javax.swing.JButton();
-        nameTextField = new javax.swing.JTextField();
-        lastName1TextField = new javax.swing.JTextField();
-        lastName2TextField = new javax.swing.JTextField();
         idTextField = new javax.swing.JTextField();
         updateButton = new javax.swing.JButton();
         phoneTextField = new javax.swing.JFormattedTextField();
@@ -350,12 +352,13 @@ public class TechniciansPanel extends javax.swing.JPanel {
         addButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableWorks = new javax.swing.JTable();
+        nameTextField = new javax.swing.JTextField();
+        lastName1TextField = new javax.swing.JTextField();
+        lastName2TextField = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(255, 255, 255));
-        setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)), "TECNICOS", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.BELOW_BOTTOM, new java.awt.Font("Segoe UI", 1, 12), new java.awt.Color(153, 153, 153))); // NOI18N
-        setMaximumSize(new java.awt.Dimension(500, 500));
-        setMinimumSize(new java.awt.Dimension(500, 500));
-        setPreferredSize(new java.awt.Dimension(100, 652));
+        setMinimumSize(new java.awt.Dimension(1000, 550));
+        setPreferredSize(new java.awt.Dimension(1100, 550));
         addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 formFocusGained(evt);
@@ -369,33 +372,6 @@ public class TechniciansPanel extends javax.swing.JPanel {
 
         searchButton.setText("Buscar");
         searchButton.addActionListener(this::searchButtonActionPerformed);
-
-        nameTextField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                nameTextFieldFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                nameTextFieldFocusLost(evt);
-            }
-        });
-
-        lastName1TextField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                lastName1TextFieldFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                lastName1TextFieldFocusLost(evt);
-            }
-        });
-
-        lastName2TextField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                lastName2TextFieldFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                lastName2TextFieldFocusLost(evt);
-            }
-        });
 
         idTextField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -451,19 +427,19 @@ public class TechniciansPanel extends javax.swing.JPanel {
         jScrollPane2.setViewportView(tableTechnician);
         tableTechnician.getAccessibleContext().setAccessibleDescription("");
 
-        nameLabel.setForeground(new java.awt.Color(0, 51, 204));
+        nameLabel.setForeground(new java.awt.Color(255, 255, 255));
         nameLabel.setText("Nombre");
 
-        lastName1Label.setForeground(new java.awt.Color(0, 51, 204));
+        lastName1Label.setForeground(new java.awt.Color(255, 255, 255));
         lastName1Label.setText("Primer Apellido");
 
-        lastName2Label.setForeground(new java.awt.Color(0, 51, 204));
+        lastName2Label.setForeground(new java.awt.Color(255, 255, 255));
         lastName2Label.setText("Segundo Apellido");
 
-        idCardLabel.setForeground(new java.awt.Color(0, 51, 204));
+        idCardLabel.setForeground(new java.awt.Color(255, 255, 255));
         idCardLabel.setText("Cédula");
 
-        phoneLabel.setForeground(new java.awt.Color(0, 51, 204));
+        phoneLabel.setForeground(new java.awt.Color(255, 255, 255));
         phoneLabel.setText("Teléfono");
 
         dummy.setText("jButton1");
@@ -489,97 +465,137 @@ public class TechniciansPanel extends javax.swing.JPanel {
         tableWorks.setFocusable(false);
         jScrollPane1.setViewportView(tableWorks);
 
+        nameTextField.setName("nameTextField"); // NOI18N
+        nameTextField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                nameTextFieldFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                nameTextFieldFocusLost(evt);
+            }
+        });
+
+        lastName1TextField.setName("lastName1TextField"); // NOI18N
+        lastName1TextField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                lastName1TextFieldFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                lastName1TextFieldFocusLost(evt);
+            }
+        });
+
+        lastName2TextField.setName("lastName2TextField"); // NOI18N
+        lastName2TextField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                lastName2TextFieldFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                lastName2TextFieldFocusLost(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(searchTextField)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(searchButton))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(nameLabel))
+                .addComponent(dummy, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lastName1TextField, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lastName1Label))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lastName2Label)
-                        .addGap(0, 131, Short.MAX_VALUE))
-                    .addComponent(lastName2TextField)))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(idTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(phoneTextField))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(phoneLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 731, Short.MAX_VALUE)
-                        .addComponent(dummy, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(jScrollPane2)
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(158, 158, 158)
-                .addComponent(idCardLabel)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(addButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(updateButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(deleteButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cleanFieldsButton)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(searchTextField)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(idTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(phoneTextField))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(addButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(updateButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(deleteButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cleanFieldsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(6, 6, 6))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(nameLabel)
+                                .addGap(209, 209, 209)
+                                .addComponent(lastName1Label)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(idCardLabel))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(phoneLabel)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(lastName1TextField, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(lastName2Label)
+                                                .addGap(0, 0, Short.MAX_VALUE))
+                                            .addComponent(lastName2TextField, javax.swing.GroupLayout.DEFAULT_SIZE, 482, Short.MAX_VALUE))))))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(searchButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(nameLabel)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lastName2Label)
-                        .addComponent(lastName1Label)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lastName1TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lastName2TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12)
-                .addComponent(phoneLabel)
+                    .addComponent(lastName2Label)
+                    .addComponent(lastName1Label)
+                    .addComponent(nameLabel))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lastName1TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lastName2TextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(phoneLabel)
+                            .addComponent(idCardLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(idTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(phoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(addButton)
                             .addComponent(updateButton)
                             .addComponent(deleteButton)
                             .addComponent(cleanFieldsButton))
-                        .addGap(35, 35, 35)
-                        .addComponent(idCardLabel)
-                        .addGap(27, 27, 27)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(185, 185, 185)
+                        .addGap(241, 241, 241)
                         .addComponent(dummy, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -600,30 +616,6 @@ public class TechniciansPanel extends javax.swing.JPanel {
         deleteTechnician();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
-    private void nameTextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nameTextFieldFocusGained
-        nameLabel.setForeground(Color.LIGHT_GRAY);
-    }//GEN-LAST:event_nameTextFieldFocusGained
-
-    private void nameTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nameTextFieldFocusLost
-        nameLabel.setForeground(Color.WHITE);
-    }//GEN-LAST:event_nameTextFieldFocusLost
-
-    private void lastName1TextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_lastName1TextFieldFocusGained
-        lastName1Label.setForeground(Color.LIGHT_GRAY);
-    }//GEN-LAST:event_lastName1TextFieldFocusGained
-
-    private void lastName1TextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_lastName1TextFieldFocusLost
-        lastName1Label.setForeground(Color.WHITE); 
-    }//GEN-LAST:event_lastName1TextFieldFocusLost
-
-    private void lastName2TextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_lastName2TextFieldFocusGained
-        lastName2Label.setForeground(Color.LIGHT_GRAY);
-    }//GEN-LAST:event_lastName2TextFieldFocusGained
-
-    private void lastName2TextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_lastName2TextFieldFocusLost
-        lastName2Label.setForeground(Color.WHITE);
-    }//GEN-LAST:event_lastName2TextFieldFocusLost
-
     private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained
 
     }//GEN-LAST:event_formFocusGained
@@ -634,6 +626,7 @@ public class TechniciansPanel extends javax.swing.JPanel {
         if (tableTechnician.getSelectedRow() != -1) {
             tableTechnician.clearSelection();
             clearFields();
+            loadTechnicianWorks();
         } else {
 
         }
@@ -662,6 +655,30 @@ public class TechniciansPanel extends javax.swing.JPanel {
     private void phoneTextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_phoneTextFieldFocusGained
         phoneLabel.setForeground(Color.LIGHT_GRAY);
     }//GEN-LAST:event_phoneTextFieldFocusGained
+
+    private void nameTextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nameTextFieldFocusGained
+        nameLabel.setForeground(Color.LIGHT_GRAY);
+    }//GEN-LAST:event_nameTextFieldFocusGained
+
+    private void nameTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nameTextFieldFocusLost
+        nameLabel.setForeground(Color.WHITE);
+    }//GEN-LAST:event_nameTextFieldFocusLost
+
+    private void lastName1TextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_lastName1TextFieldFocusGained
+        lastName1Label.setForeground(Color.LIGHT_GRAY);
+    }//GEN-LAST:event_lastName1TextFieldFocusGained
+
+    private void lastName1TextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_lastName1TextFieldFocusLost
+        lastName1Label.setForeground(Color.WHITE);
+    }//GEN-LAST:event_lastName1TextFieldFocusLost
+
+    private void lastName2TextFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_lastName2TextFieldFocusGained
+        lastName2Label.setForeground(Color.LIGHT_GRAY);
+    }//GEN-LAST:event_lastName2TextFieldFocusGained
+
+    private void lastName2TextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_lastName2TextFieldFocusLost
+        lastName2Label.setForeground(Color.WHITE);
+    }//GEN-LAST:event_lastName2TextFieldFocusLost
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
